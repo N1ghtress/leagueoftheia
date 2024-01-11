@@ -7,7 +7,6 @@ from copy import deepcopy
 
 class URL:
     chunks: list
-    
     def __init__(self, chunks = []):
         self.chunks = chunks
         
@@ -18,12 +17,12 @@ class URL:
     def build(self) -> str:
         return '/'.join(self.chunks)
 
-def get_versions():
+def versions():
     url = 'https://ddragon.leagueoflegends.com/api/versions.json'
     response = requests.get(url)
     return response.json()
 
-def get_champion_json(*args, version=None, dir=''):
+def champion_json(*args, version=None, dir=''):
     if not version: version = args[0]
     if not dir: dir = args[1]
 
@@ -39,7 +38,7 @@ def get_champion_json(*args, version=None, dir=''):
         f.write(champion_json)
     return response.json()
 
-def get_champion_square_assets(version, champions, dir=''):
+def champion_square_assets(version, champions, dir=''):
     base_url = URL([
         'https://ddragon.leagueoflegends.com/cdn',
         version,
@@ -54,6 +53,29 @@ def get_champion_square_assets(version, champions, dir=''):
             count += 1
     return count
 
+def account(API, game_name, tag_line):
+    url = URL([
+        'https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id',
+        game_name,
+        tag_line
+    ]).build()
+
+    response = requests.get(url, headers={
+        "X-Riot-Token": API
+    })
+    return response.json()
+
+def champion_mastery(API, puuid):
+    url = URL([
+        'https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid',
+        puuid
+    ]).build()
+
+    response = requests.get(url, headers={
+        "X-Riot-Token": API
+    })
+    return response.json()
+
 def time_func(func, *args, **kwargs):
     UP = '\033[1A'
     CLEAR = '\x1b[2K'
@@ -64,3 +86,5 @@ def time_func(func, *args, **kwargs):
     print(UP, end=CLEAR)
     print(text + " " + str(time.time() - t0))
     return retval
+
+
