@@ -59,14 +59,14 @@ if __name__ == '__main__':
         API,
         'N1Ghtress',
         '420',
+        DIR,
         text='Fetching account'
     )
-    print(account)
 
     champion_mastery = lib.time_func(
         lib.champion_mastery,
         API,
         account['puuid'],
+        DIR,
         text='Fetching champion mastery'
     )
-    print(champion_mastery)
