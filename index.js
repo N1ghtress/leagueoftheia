@@ -1,40 +1,18 @@
-const account_by_riot_id = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id"
+const width = 700, height = 500
+const dir = 'data/'
 
-const key_input = document.querySelector("#key")
-let key = ""
-key_input.onchange = (e) => {
-    key = e.target.value
-}
+let svg = d3.select('body')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
 
-const riot_id_input = document.querySelector("#riot-id")
-let riot_id = ""
-riot_id_input.onchange = (e) => {
-    riot_id = e.target.value
-}
+let g = svg.append('g')
 
-const search_button = document.querySelector("#search")
-search_button.onclick = (e) => {
-    if (riot_id === "" || key === "") {
-        console.error("Missing api key or riot id!")
-        return
-    }
+champion_mastery = d3.json(dir + 'champion_mastery_Bmn5dAH2VEy0fvqIHRrHtIV1-4iJd5hlW-R9DOSR7Ds5hR07ZgAtdGyeE5MQmVuY0A_9y2g_ygHscA.json')
+champion = d3.json(dir + 'champion_14.1.1.json')
 
-    let chunks = []
-    chunks.push(account_by_riot_id)
-    chunks = chunks.concat(riot_id.split("#"))
-    const url = chunks.join("/")
-    console.log(url)
-    const request = new Request(url, {
-        method: "GET",
-        headers: {
-            "X-Riot-Token": key, // API KEY HERE
-            "Origin": "https://developer.riotgames.com"
-        },
-        mode: "cors",
-        cache: "default",
-    })
-
-    fetch(request).then((response) => {
-        console.log(response)
-    })
-}
+Promise.all([champion_mastery, champion]).then((results) => {
+    champion_mastery = results[0]
+    champion = results[1]
+    console.log(champion, champion_mastery)
+})
