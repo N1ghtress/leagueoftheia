@@ -22,12 +22,15 @@ function drawIcicle(masteries) {
         a[c.championTag].championPoints += c.championPoints
         return a
     }, {})
-    classMasteries['Support'].color = '#1f77b4',
-    classMasteries['Assassin'].color = '#ff7f0e',
-    classMasteries['Tank'].color = '#2ca02c',
-    classMasteries['Fighter'].color = '#d62728',
-    classMasteries['Mage'].color = '#9467bd',
-    classMasteries['Marksman'].color = '#8c984b',
+
+    const color = {
+        'Support': '#1f77b4',
+        'Assassin': '#ff7f0e',
+        'Tank': '#2ca02c',
+        'Fighter': '#d62728',
+        'Mage': '#9467bd',
+        'Marksman': '#8c984b'   
+    }
     classMasteriesArray = []
     for (tag in classMasteries) {
         classMasteriesArray.push(classMasteries[tag])
@@ -59,7 +62,7 @@ function drawIcicle(masteries) {
         .attr("width", BAR_WIDTH)
         .attr("height", SVG_HEIGHT)
         .style("font-size", FONT_SIZE + "px")
-        .style("fill", "#ccc")
+        .style("fill", "#CCA300")
     totalText = totalGroup.data(totalMastery)
         .append("text")
         .attr("y", 21)
@@ -83,7 +86,7 @@ function drawIcicle(masteries) {
         .attr("height", d => {
             return computeHeight(d) - sepSize            
         })
-        .style("fill", d => d.color)
+        .style("fill", d => color[d.championTag])
     classBar.append("rect")
         .attr("x", BAR_WIDTH)
         .attr("y", d => computeHeight(d) - sepSize)
@@ -116,7 +119,7 @@ function drawIcicle(masteries) {
         .attr("height", d => { 
             return computeHeight(d) - sepSize
         })
-        .style("fill", d => classMasteries[d.championTag].color)
+        .style("fill", d => color[d.championTag])
     championBar.append("rect")
         .attr("x", BAR_WIDTH * 2)
         .attr("width", BAR_WIDTH)

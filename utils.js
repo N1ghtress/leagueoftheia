@@ -4,9 +4,11 @@ function clearSVG() {
 window.clearSVG = clearSVG
 
 function getMasteriesData(puuid) {
+    mastery_path = DIR + 'champion_mastery_' + puuid + '.json'
+    champion_path = DIR + 'champion_14.1.1.json'
     return [
-        d3.json(DIR + 'champion_mastery_' + puuid + '.json'), 
-        d3.json(DIR + 'champion_14.1.1.json')
+        d3.json(mastery_path),
+        d3.json(champion_path)
     ]
 }
 window.getMasteriesData = getMasteriesData
