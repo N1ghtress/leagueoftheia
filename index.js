@@ -1,18 +1,57 @@
-const width = window.innerWidth
-const height = window.innerHeight
-const dir = 'data/'
+const WIDTH = window.innerWidth
+const HEIGHT = window.innerHeight
+const DIR = 'data/'
 
-let svg = d3.select('div').append('svg')
+const SVG = d3.select('div').append('svg')
 
-champion_mastery = d3.json(dir + 'champion_mastery_Bmn5dAH2VEy0fvqIHRrHtIV1-4iJd5hlW-R9DOSR7Ds5hR07ZgAtdGyeE5MQmVuY0A_9y2g_ygHscA.json')
-champion = d3.json(dir + 'champion_14.1.1.json')
+const NAV_TABS = document.querySelector(".nav-tabs").children
 
-Promise.all([champion_mastery, champion]).then((results) => {
-    let masteries = results[0]
-    let champion = results[1]
-    masteries = prepareData(champion, masteries)
-    drawBars(masteries)
-})
+const PUUID = 'Bmn5dAH2VEy0fvqIHRrHtIV1-4iJd5hlW-R9DOSR7Ds5hR07ZgAtdGyeE5MQmVuY0A_9y2g_ygHscA'
+
+let SELECTED_TAB = NAV_TABS[0]
+displayBars(PUUID)
+
+NAV_TABS[0].onclick = () => {
+    let tab = NAV_TABS[0]
+    if (SELECTED_TAB === tab) return
+
+    SELECTED_TAB.children[0].classList.remove("active")
+    tab.children[0].classList.add("active")
+    SELECTED_TAB = tab
+    clearSVG()
+    displayBars(PUUID)
+}
+
+NAV_TABS[1].onclick = () => {
+    let tab = NAV_TABS[1]
+    if (SELECTED_TAB === tab) return
+
+    SELECTED_TAB.children[0].classList.remove("active")
+    tab.children[0].classList.add("active")
+    clearSVG()
+    // Other viz missing here
+    SELECTED_TAB = tab
+}
+
+function clearSVG() {
+    SVG._groups[0][0].innerHTML = ""
+}
+
+function displayBars(puuid) {
+    let promises = getMasteriesData(puuid)
+    Promise.all([promises[0], promises[1]]).then(results => {
+        let masteries = results[0]
+        let champion = results[1]
+        masteries = prepareData(champion, masteries)
+        drawBars(masteries)
+    }) 
+}
+
+function getMasteriesData(puuid) {
+    champion_mastery = d3.json(DIR + 'champion_mastery_' + puuid + '.json')
+    champion = d3.json(DIR + 'champion_14.1.1.json')
+    return [champion_mastery, champion]
+}
 
 function prepareData(champion, masteries) {
     idNameMap = {}
@@ -51,12 +90,13 @@ function drawBars(masteries) {
     for (tag in classMasteries) {
         classMasteriesArray.push(classMasteries[tag])
     }
+    classMasteriesArray.sort((a, b) => classMasteries[a.championTag].championPoints < classMasteries[b.championTag].championPoints)
     masteries.sort((a, b) => classMasteries[a.championTag].championPoints < classMasteries[b.championTag].championPoints)
 
-    // Size of svg
-    SVG_WIDTH = width * 0.8
+    // Size of SVG
+    SVG_WIDTH = WIDTH * 0.8
     SVG_HEIGHT = 750
-    svg.attr("width", SVG_WIDTH)
+    SVG.attr("width", SVG_WIDTH)
         .attr("height", SVG_HEIGHT)
         .style("margin", "auto")
     BAR_WIDTH = SVG_WIDTH / 3
@@ -71,7 +111,7 @@ function drawBars(masteries) {
     sepSize = 1
 
     // Total
-    totalGroup = svg.append("g")
+    totalGroup = SVG.append("g")
     totalBar = totalGroup.data(totalMastery)
         .append("rect")
         .attr("width", BAR_WIDTH)
@@ -84,7 +124,7 @@ function drawBars(masteries) {
         .text(d => "Total " + d.championPoints)
 
     // Class
-    classGroup = svg.append("g")
+    classGroup = SVG.append("g")
     classBar = classGroup.selectAll("g")
         .data(classMasteriesArray)
         .enter()
@@ -117,7 +157,7 @@ function drawBars(masteries) {
     
     // Champions
     nextY = 0
-    championGroup = svg.append("g")
+    championGroup = SVG.append("g")
     championBar = championGroup.selectAll("g")
         .data(masteries)
         .enter()
