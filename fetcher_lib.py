@@ -63,6 +63,8 @@ def champion_square_assets(version, champions, dir):
     for champion in champions:
         file_path = dir + champion + '.png'
         if not os.path.isfile(file_path):
+            if not os.path.isdir(dir):
+                os.mkdir(dir)
             url = deepcopy(base_url).add(champion + '.png').build()
             urlretrieve(url, dir + champion + '.png')
             count += 1
@@ -74,7 +76,7 @@ Gets puuid with game name and tag line.
 Returns json
 '''
 def account(API, game_name, tag_line, dir):
-    file_path = dir + game_name + ' ' + tag_line + 'champion_mastery.json'
+    file_path = dir + game_name + '#' + tag_line + '.json'
 
     if os.path.isfile(file_path):
         with open(file_path) as f:

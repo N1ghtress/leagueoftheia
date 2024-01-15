@@ -19,14 +19,17 @@ if __name__ == '__main__':
         help='Version of league to fetch data from.'
     )
     parser.add_argument(
-        '-d', '--dir',
-        help='Data destination directory.'
+        '-r', '--riot-id',
+        dest='riot_id',
+        help='Your riot ID like so: gameName#tagLine.'
     )
 
     args = parser.parse_args()
     API = args.api_key
-    DIR = args.dir
     VERSION = args.version
+    DIR = 'data/'
+    RIOT_ID = args.riot_id
+    GAME_NAME, TAG_LINE = RIOT_ID.split('#')
 
     if not VERSION:
         versions = lib.time_func(
@@ -34,7 +37,6 @@ if __name__ == '__main__':
             text="Fetching versions"
         )
         VERSION = versions[0]
-    if not DIR: DIR = './'
     if not API: API = ''
    
     champion_json = lib.time_func(
@@ -49,7 +51,7 @@ if __name__ == '__main__':
         lib.champion_square_assets,
         VERSION,
         champions,
-        DIR,
+        DIR + 'assets/',
         text="Fetching champions square assets"
     )
     print(f"Square assets updated: {square_assets_updated}")
@@ -57,8 +59,8 @@ if __name__ == '__main__':
     account = lib.time_func(
         lib.account,
         API,
-        'N1Ghtress',
-        '420',
+        GAME_NAME,
+        TAG_LINE,
         DIR,
         text='Fetching account'
     )
