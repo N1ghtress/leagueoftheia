@@ -42,11 +42,12 @@ def champion_json(version=None, dir=''):
             'data/fr_FR/champion.json'
         ]).build()
         response = requests.get(url)
-        data = response.json()
-        file_data = json.dumps(data, indent=4)
-        create_missing_dir(dir)
-        with open(file_path, 'w') as f:
-            f.write(file_data)
+        if response.status_code == 200:
+            data = response.json()
+            file_data = json.dumps(data, indent=4)
+            create_missing_dir(dir)
+            with open(file_path, 'w') as f:
+                f.write(file_data)
 
     return data
 
@@ -76,7 +77,7 @@ Gets puuid with game name and tag line.
 Returns json
 '''
 def account(API, game_name, tag_line, dir):
-    file_path = dir + game_name + '#' + tag_line + '.json'
+    file_path = dir + game_name + ':' + tag_line + '.json'
 
     if os.path.isfile(file_path):
         with open(file_path) as f:
@@ -87,12 +88,13 @@ def account(API, game_name, tag_line, dir):
             game_name,
             tag_line
         ]).build()
-        response = requests.get(url, headers={ "X-Riot-Token": API  })
-        data = response.json()
-        file_data = json.dumps(data)
-        create_missing_dir(dir)
-        with open(file_path, 'w') as f:
-            f.write(file_data)
+        response = requests.get(url, headers={ "X-Riot-Token": API })
+        if response.status_code == 200:
+            data = response.json()
+            file_data = json.dumps(data)
+            create_missing_dir(dir)
+            with open(file_path, 'w') as f:
+                f.write(file_data)
 
     return data
 
@@ -112,11 +114,12 @@ def champion_mastery(API, puuid, dir):
             puuid
         ]).build()
         response = requests.get(url, headers={ "X-Riot-Token": API })
-        data = response.json()
-        file_data = json.dumps(data)
-        create_missing_dir(dir)
-        with open(file_path, 'w') as f:
-            f.write(file_data)
+        if response.status_code == 200:
+            data = response.json()
+            file_data = json.dumps(data)
+            create_missing_dir(dir)
+            with open(file_path, 'w') as f:
+                f.write(file_data)
 
     return data
 

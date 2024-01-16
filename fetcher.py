@@ -37,8 +37,7 @@ if __name__ == '__main__':
             text="Fetching versions"
         )
         VERSION = versions[0]
-    if not API: API = ''
-   
+    
     champion_json = lib.time_func(
         lib.champion_json,
         VERSION,
