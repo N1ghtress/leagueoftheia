@@ -8,7 +8,7 @@ const PUUID = ''
 const puuidInput = document.querySelector('#puuid-input')
 puuidInput.onchange = (e) => {
     const PUUID = e.target.value
-    if (PUUID === '') {
+    if (PUUID !== '') {
         window.displayIcicle(PUUID)
     }
 }
@@ -22,7 +22,7 @@ NAV_TABS[0].onclick = () => {
     tab.children[0].classList.add("active")
     SELECTED_TAB = tab
     window.clearSVG()
-    if (PUUID === '') {
+    if (PUUID !== '') {
         window.displayIcicle(PUUID)
     }
 }
@@ -35,7 +35,7 @@ NAV_TABS[1].onclick = () => {
     tab.children[0].classList.add("active")
     SELECTED_TAB = tab
     window.clearSVG()
-    if (PUUID ==='') {
+    if (PUUID !== '') {
         // Viz
     }
 }
