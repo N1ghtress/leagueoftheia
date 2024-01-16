@@ -44,6 +44,7 @@ def champion_json(version=None, dir=''):
         response = requests.get(url)
         data = response.json()
         file_data = json.dumps(data, indent=4)
+        create_missing_dir(dir)
         with open(file_path, 'w') as f:
             f.write(file_data)
 
@@ -63,8 +64,7 @@ def champion_square_assets(version, champions, dir):
     for champion in champions:
         file_path = dir + champion + '.png'
         if not os.path.isfile(file_path):
-            if not os.path.isdir(dir):
-                os.mkdir(dir)
+            create_missing_dir(dir)
             url = deepcopy(base_url).add(champion + '.png').build()
             urlretrieve(url, dir + champion + '.png')
             count += 1
@@ -90,6 +90,7 @@ def account(API, game_name, tag_line, dir):
         response = requests.get(url, headers={ "X-Riot-Token": API  })
         data = response.json()
         file_data = json.dumps(data)
+        create_missing_dir(dir)
         with open(file_path, 'w') as f:
             f.write(file_data)
 
@@ -113,6 +114,7 @@ def champion_mastery(API, puuid, dir):
         response = requests.get(url, headers={ "X-Riot-Token": API })
         data = response.json()
         file_data = json.dumps(data)
+        create_missing_dir(dir)
         with open(file_path, 'w') as f:
             f.write(file_data)
 
@@ -132,4 +134,10 @@ def time_func(func, *args, **kwargs):
     print(text + " " + str(time.time() - t0))
     return retval
 
-
+'''
+Creates directory if it doesn't exists
+'''
+def create_missing_dir(dir):
+    if not os.path.isdir(dir):
+        os.mkdir(dir)
+        print(f'Created directory {dir}')
