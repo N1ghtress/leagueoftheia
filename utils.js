@@ -27,3 +27,9 @@ function prepareMasteriesData(champion, masteries) {
 }
 window.prepareMasteriesData = prepareMasteriesData
 
+function changeTab(newTab) {
+    SELECTED_TAB.children[0].classList.remove("active")
+    newTab.children[0].classList.add("active")
+    SELECTED_TAB = newTab
+}
+window.changeTab = changeTab

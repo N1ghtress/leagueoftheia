@@ -1,13 +1,3 @@
-function displayIcicle(puuid) {
-    let promises = window.getMasteriesData(puuid)
-    Promise.all([promises[0], promises[1]]).then(results => {
-        let masteries = results[0]
-        let champion = results[1]
-        masteries = window.prepareMasteriesData(champion, masteries)
-        drawIcicle(masteries)
-    }) 
-}
-
 function drawIcicle(masteries) {
     totalMastery = [{
         championPoints: masteries.reduce((a, c) => a + c.championPoints, 0)
@@ -134,5 +124,4 @@ function drawIcicle(masteries) {
             return d.championName + ' ' + d.championPoints
         })
 }
-
-window.displayIcicle = displayIcicle
+window.drawIcicle = drawIcicle
