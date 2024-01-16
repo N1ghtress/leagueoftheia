@@ -1,5 +1,6 @@
 function clearSVG() {
-    SVG._groups[0][0].innerHTML = ''
+    let svg = d3.select('#viz')
+    svg._groups[0][0].innerHTML = ''
 }
 window.clearSVG = clearSVG
 
@@ -12,6 +13,12 @@ function getMasteriesData(puuid) {
     ]
 }
 window.getMasteriesData = getMasteriesData
+
+function getAccountData(riot_id) {
+    account_path = DIR + riot_id + '.json'
+    return d3.json(account_path)
+}
+window.getAccountData = getAccountData
 
 function prepareMasteriesData(champion, masteries) {
     let idNameMap = {}

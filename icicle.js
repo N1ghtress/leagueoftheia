@@ -28,8 +28,8 @@ function drawIcicle(masteries) {
     classMasteriesArray.sort((a, b) => classMasteries[a.championTag].championPoints < classMasteries[b.championTag].championPoints)
     masteries.sort((a, b) => classMasteries[a.championTag].championPoints < classMasteries[b.championTag].championPoints)
 
-    // Size of SVG
-    SVG_WIDTH = WIDTH * 0.8
+    const SVG = d3.select('#viz')
+    SVG_WIDTH = window.innerWidth * 0.8
     SVG_HEIGHT = 750
     SVG.attr("width", SVG_WIDTH)
         .attr("height", SVG_HEIGHT)
@@ -47,20 +47,20 @@ function drawIcicle(masteries) {
 
     // Total
     totalGroup = SVG.append("g")
-    totalBar = totalGroup.data(totalMastery)
+    let totalBar = totalGroup.data(totalMastery)
         .append("rect")
         .attr("width", BAR_WIDTH)
         .attr("height", SVG_HEIGHT)
         .style("font-size", FONT_SIZE + "px")
         .style("fill", "#CCA300")
-    totalText = totalGroup.data(totalMastery)
+    let totalText = totalGroup.data(totalMastery)
         .append("text")
         .attr("y", 21)
         .text(d => "Total " + d.championPoints)
 
     // Class
-    classGroup = SVG.append("g")
-    classBar = classGroup.selectAll("g")
+    let classGroup = SVG.append("g")
+    let classBar = classGroup.selectAll("g")
         .data(classMasteriesArray)
         .enter()
         .append("g")
@@ -92,8 +92,9 @@ function drawIcicle(masteries) {
     
     // Champions
     nextY = 0
-    championGroup = SVG.append("g")
-    championBar = championGroup.selectAll("g")
+    let championGroup = SVG.append("g")
+    // Groups
+    let championBar = championGroup.selectAll("g")
         .data(masteries)
         .enter()
         .append("g")
@@ -103,6 +104,7 @@ function drawIcicle(masteries) {
             nextY += computeHeight(d)
             return "translate(0," + y + ")" 
         })
+    // Bars
     championBar.append("rect")
         .attr("x", BAR_WIDTH * 2)
         .attr("width", BAR_WIDTH)
@@ -110,6 +112,10 @@ function drawIcicle(masteries) {
             return computeHeight(d) - sepSize
         })
         .style("fill", d => color[d.championTag])
+        .on('click', (e, d) => {
+            // tooltip
+        })
+    // Separators
     championBar.append("rect")
         .attr("x", BAR_WIDTH * 2)
         .attr("width", BAR_WIDTH)
