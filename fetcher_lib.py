@@ -144,3 +144,67 @@ def create_missing_dir(dir):
     if not os.path.isdir(dir):
         os.mkdir(dir)
         print(f'Created directory {dir}')
+
+'''
+Gets match info with puuid.
+type : the type of match : should be one of the following values {'ranked','normal','tourney','tutorial','any'} where 'any' means anytype of game
+games : int, number of match id you want to get, default 20
+Returns json with info of multiple games played by the play define by puuid
+'''
+def get_match_info_by_puuid(API , puuid, dir, type='any',games='20') :
+    file_path = dir + 'match_id_'+ type + '_' +games + '_' + puuid + '.json'
+    if os.path.isfile(file_path):
+        with open(file_path) as f:
+            data = json.load(f)        
+    else:
+        if type == 'any' :
+            url = URL([
+                'https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid',
+                 puuid,
+                'ids?start=0&count=' + games
+                
+            ]).build()
+        else :
+            url = URL([
+                'https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid',
+                 puuid,
+                'ids?type=' + type +'&start=0&count='+ games
+                
+            ]).build()
+        
+        response = requests.get(url, headers={ "X-Riot-Token": API })
+        if response.status_code == 200:
+            data = response.json()
+            data = time_func(
+                    get_match_info_by_matchId,
+                    API,
+                    data,
+                    text='Fetching match info'
+                )
+            file_data = json.dumps(data)
+            create_missing_dir(dir)
+            with open(file_path, 'w') as f:
+                f.write(file_data)
+    return data
+    
+    
+'''
+Gets match information with matchId.
+tab_matchId : table of matchId
+Returns json
+'''
+def get_match_info_by_matchId(API, tab_matchId) :
+    nb_games = len(tab_matchId)
+
+    data = {}
+    for i, match_id in enumerate(tab_matchId) :
+        url = URL([
+            'https://europe.api.riotgames.com/lol/match/v5/matches',
+            match_id
+            
+        ]).build()
+        response = requests.get(url, headers={ "X-Riot-Token": API })
+        
+        if response.status_code == 200:
+            data[i] = response.json()
+    return data    

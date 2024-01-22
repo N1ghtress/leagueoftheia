@@ -3,17 +3,20 @@ const HEIGHT = window.innerHeight
 const DIR = 'data/'
 const IMG_DIR = 'data/assets/'
 const NAV_TABS = document.querySelector(".nav-tabs").children
+const SELECT_GAME_MODE = document.getElementById('mode_select')
 
 let PUUID = ''
 let SELECTED_TAB = NAV_TABS[0]
 let RIOT_ID = ''
 let GAME_NAME = ''
 let TAG_LINE = ''
+let SELECTED_GAME_MODE = document.getElementById('mode_select').value
 
 let masteries = undefined
 
 NAV_TABS[0].onclick = () => {
     window.changeTab(NAV_TABS[0])
+	window.clearTable()
     window.clearSVG()
     if (!masteries) return
     window.drawIcicle(masteries)
@@ -21,10 +24,24 @@ NAV_TABS[0].onclick = () => {
 
 NAV_TABS[1].onclick = () => {
     window.changeTab(NAV_TABS[1])
+	window.clearTable()
     window.clearSVG()
     if (!masteries) return
     window.drawBubbles(masteries)
 }
+
+NAV_TABS[2].onclick = () => {
+    window.changeTab(NAV_TABS[2])
+    window.clearTable()
+	window.showSelector()
+    window.drawMatchHistory('OoFvgLmC8ndll3fcyCulsRgNEReTW2Z2K2k6LoWdfrUArMKvNMlAKoRIALGLWm25AzBXBYfYdEK8NQ','any','60')
+}
+
+SELECT_GAME_MODE.onchange = () => {
+	SELECTED_GAME_MODE = document.getElementById('mode_select').value
+	window.changeTableShowned(SELECTED_GAME_MODE)
+}
+
 
 const riotIDInput = document.querySelector('#riot-id-input')
 riotIDInput.onchange = (e) => {

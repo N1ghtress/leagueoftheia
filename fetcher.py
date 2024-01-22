@@ -71,3 +71,13 @@ if __name__ == '__main__':
         DIR,
         text='Fetching champion mastery'
     )
+    
+    match_info = lib.time_func(
+        lib.get_match_info_by_puuid,
+        API,
+        account['puuid'],
+        DIR,
+        'any',
+        '60',
+        text='Fetching match info by puuid'
+    )

@@ -2,7 +2,18 @@ function clearSVG() {
     let svg = d3.select('#viz')
     svg._groups[0][0].innerHTML = ''
 }
+
+
 window.clearSVG = clearSVG
+
+
+function clearTable() {
+	let div = d3.select('div')
+	div._groups[0][0].innerHTML = ''
+	window.hideSelector()
+}
+
+window.clearTable = clearTable
 
 function getMasteriesData(puuid) {
     mastery_path = DIR + 'champion_mastery_' + puuid + '.json'
@@ -34,9 +45,42 @@ function prepareMasteriesData(champion, masteries) {
 }
 window.prepareMasteriesData = prepareMasteriesData
 
+
 function changeTab(newTab) {
     SELECTED_TAB.children[0].classList.remove("active")
     newTab.children[0].classList.add("active")
     SELECTED_TAB = newTab
 }
 window.changeTab = changeTab
+
+
+function hideSelector() {
+	let sel = document.getElementById('mode_select')
+	sel.style.display = "none";
+}
+
+window.hideSelector = hideSelector
+
+function showSelector() {
+	let sel = document.getElementById('mode_select')
+	sel.style.display = "block";
+}
+window.showSelector = showSelector
+
+/* 
+	function that will show the table you selected whith the select and hide the other ones
+	show is the id of the table you want to show
+ */
+function changeTableShowned(show) {
+	tables = document.getElementsByTagName('table')
+	for(let i = 0; i < tables.length; i++) {
+		if(tables[i].id === show) {
+			tables[i].style.display = "block";
+		}
+		else{
+			tables[i].style.display = "none";
+		}
+	}
+}
+
+window.changeTableShowned = changeTableShowned

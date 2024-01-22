@@ -14,6 +14,7 @@
   <script defer src="./icicle.js"></script>
   <script defer src="./bubbles.js"></script>
   <script defer src="./index.js"></script>
+  <script defer src="./match_history.js"></script>
 </head>
 <body>
   <h1>League Of Theia</h1>
@@ -26,10 +27,17 @@
     <li class="nav-item">
       <a class="nav-link" aria-current="page" href="#">Bubbles</a>
     </li>
+	<li class="nav-item">
+      <a class="nav-link" aria-current="page" href="#">Match History</a>
+    </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Other</a>
     </li>
   </ul>
+  <select id="mode_select" style="display: none;">
+	<option value='ARAM'>ARAM</option>
+	<option value='Ranked'>Ranked</option>
+  </select>
   <div class="d-flex justify-content-center">
     <svg id="viz"></svg>
   </div>
