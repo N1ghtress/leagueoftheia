@@ -39,7 +39,7 @@ NAV_TABS[2].onclick = () => {
 
 SELECT_GAME_MODE.onchange = () => {
 	SELECTED_GAME_MODE = document.getElementById('mode_select').value
-	window.changeTableShowned(SELECTED_GAME_MODE)
+	window.changeTableShown(SELECTED_GAME_MODE)
 }
 
 

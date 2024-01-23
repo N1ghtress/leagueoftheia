@@ -1,18 +1,19 @@
 function clearSVG() {
     let svg = d3.select('#viz')
-    svg._groups[0][0].innerHTML = ''
+		if (svg._groups[0][0] !== null) {
+				svg._groups[0][0].innerHTML = ''		
+		}
 }
-
-
 window.clearSVG = clearSVG
 
 
 function clearTable() {
-	let div = d3.select('div')
-	div._groups[0][0].innerHTML = ''
+	let table = d3.select('table')
+	if (table._groups[0][0] !== null) {
+		table._groups[0][0].innerHTML = ''
+	}
 	window.hideSelector()
 }
-
 window.clearTable = clearTable
 
 function getMasteriesData(puuid) {
@@ -71,7 +72,7 @@ window.showSelector = showSelector
 	function that will show the table you selected whith the select and hide the other ones
 	show is the id of the table you want to show
  */
-function changeTableShowned(show) {
+function changeTableShown(show) {
 	tables = document.getElementsByTagName('table')
 	for(let i = 0; i < tables.length; i++) {
 		if(tables[i].id === show) {
@@ -82,5 +83,4 @@ function changeTableShowned(show) {
 		}
 	}
 }
-
-window.changeTableShowned = changeTableShowned
+window.changeTableShown = changeTableShown
