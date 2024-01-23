@@ -8,9 +8,9 @@ window.clearSVG = clearSVG
 
 
 function clearTable() {
-	let table = d3.select('table')
-	if (table._groups[0][0] !== null) {
-		table._groups[0][0].innerHTML = ''
+	let table = document.getElementsByTagName("table")
+	for (let i = 0; i < table.length; i++) {
+		table[i].remove()
 	}
 	window.hideSelector()
 }
