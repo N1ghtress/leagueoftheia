@@ -133,7 +133,12 @@ function getPlayerId(game, puuid) {
 	columns is the columns names
 */
 function tabulate(data, title, columns, puuid) {
-		let table = d3.select('div').append('table').attr('id', title)
+		let table = d3.select('#viz-container')
+				.append('table')
+				.attr('id', title)
+				.classed('table', true)
+				.classed('table-striped', true)
+				.classed('table-hover', true)
 		let thead = table.append('thead')
 		let	tbody = table.append('tbody');
 		
