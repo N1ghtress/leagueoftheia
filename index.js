@@ -16,7 +16,7 @@ let masteries = undefined
 
 NAV_TABS[0].onclick = () => {
     window.changeTab(NAV_TABS[0])
-	window.clearTable()
+    window.clearTable()
     window.clearSVG()
     if (!masteries) return
     window.drawIcicle(masteries)
@@ -24,7 +24,7 @@ NAV_TABS[0].onclick = () => {
 
 NAV_TABS[1].onclick = () => {
     window.changeTab(NAV_TABS[1])
-	window.clearTable()
+    window.clearTable()
     window.clearSVG()
     if (!masteries) return
     window.drawBubbles(masteries)
@@ -33,8 +33,9 @@ NAV_TABS[1].onclick = () => {
 NAV_TABS[2].onclick = () => {
     window.changeTab(NAV_TABS[2])
     window.clearTable()
-	window.showSelector()
-    window.drawMatchHistory('OoFvgLmC8ndll3fcyCulsRgNEReTW2Z2K2k6LoWdfrUArMKvNMlAKoRIALGLWm25AzBXBYfYdEK8NQ','any','60')
+    window.clearSVG()
+    window.showSelector()
+    window.drawMatchHistory(PUUID,'any','60')
 }
 
 SELECT_GAME_MODE.onchange = () => {
@@ -51,7 +52,7 @@ riotIDInput.onchange = (e) => {
     GAME_NAME = e.target.value.split('#')[0]
     TAG_LINE = e.target.value.split('#')[1]
     
-    window.getAccountData(GAME_NAME + ':' + TAG_LINE).then(account => {
+    window.getAccountData(GAME_NAME + '_' + TAG_LINE).then(account => {
         PUUID = account.puuid
         promises = window.getMasteriesData(PUUID)
         Promise.all(promises).then(results => {

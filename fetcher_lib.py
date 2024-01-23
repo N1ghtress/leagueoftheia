@@ -5,6 +5,8 @@ import json
 from urllib.request import urlretrieve
 from copy import deepcopy
 
+ACCOUNT_SEP_CHAR = '_'
+
 '''
 URL builder class
 '''
@@ -78,7 +80,7 @@ Gets puuid with game name and tag line.
 Returns json
 '''
 def account(API, game_name, tag_line, dir):
-    file_path = dir + game_name + ':' + tag_line + '.json'
+    file_path = dir + game_name + ACCOUNT_SEP_CHAR + tag_line + '.json'
 
     if os.path.isfile(file_path):
         with open(file_path) as f:
