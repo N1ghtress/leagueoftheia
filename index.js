@@ -17,6 +17,7 @@ let masteries = undefined
 NAV_TABS[0].onclick = () => {
     window.changeTab(NAV_TABS[0])
     window.clearViz()
+	window.hideSelector()
     if (!masteries) return
     window.drawIcicle(masteries)
 }
@@ -24,6 +25,7 @@ NAV_TABS[0].onclick = () => {
 NAV_TABS[1].onclick = () => {
     window.changeTab(NAV_TABS[1])
     window.clearViz()
+	window.hideSelector()
     if (!masteries) return
     window.drawBubbles(masteries)
 }
