@@ -42,12 +42,13 @@ def champion_json(version=None, dir=''):
             'data/fr_FR/champion.json'
         ]).build()
         response = requests.get(url)
-        if response.status_code == 200:
-            data = response.json()
-            file_data = json.dumps(data, indent=4)
-            create_missing_dir(dir)
-            with open(file_path, 'w') as f:
-                f.write(file_data)
+        response.raise_for_status()
+
+        data = response.json()
+        file_data = json.dumps(data, indent=4)
+        create_missing_dir(dir)
+        with open(file_path, 'w') as f:
+            f.write(file_data)
 
     return data
 
@@ -89,12 +90,13 @@ def account(API, game_name, tag_line, dir):
             tag_line
         ]).build()
         response = requests.get(url, headers={ "X-Riot-Token": API })
-        if response.status_code == 200:
-            data = response.json()
-            file_data = json.dumps(data)
-            create_missing_dir(dir)
-            with open(file_path, 'w') as f:
-                f.write(file_data)
+        response.raise_for_status()
+
+        data = response.json()
+        file_data = json.dumps(data)
+        create_missing_dir(dir)
+        with open(file_path, 'w') as f:
+            f.write(file_data)
 
     return data
 
@@ -114,12 +116,13 @@ def champion_mastery(API, puuid, dir):
             puuid
         ]).build()
         response = requests.get(url, headers={ "X-Riot-Token": API })
-        if response.status_code == 200:
-            data = response.json()
-            file_data = json.dumps(data)
-            create_missing_dir(dir)
-            with open(file_path, 'w') as f:
-                f.write(file_data)
+        response.raise_for_status()
+
+        data = response.json()
+        file_data = json.dumps(data)
+        create_missing_dir(dir)
+        with open(file_path, 'w') as f:
+            f.write(file_data)
 
     return data
 
@@ -173,18 +176,20 @@ def get_match_info_by_puuid(API , puuid, dir, type='any',games='20') :
             ]).build()
         
         response = requests.get(url, headers={ "X-Riot-Token": API })
-        if response.status_code == 200:
-            data = response.json()
-            data = time_func(
-                    get_match_info_by_matchId,
-                    API,
-                    data,
-                    text='Fetching match info'
-                )
-            file_data = json.dumps(data)
-            create_missing_dir(dir)
-            with open(file_path, 'w') as f:
-                f.write(file_data)
+        response.raise_for_status()
+
+        data = response.json()
+        data = time_func(
+                get_match_info_by_matchId,
+                API,
+                data,
+                text='Fetching match info'
+            )
+        file_data = json.dumps(data)
+        create_missing_dir(dir)
+        with open(file_path, 'w') as f:
+            f.write(file_data)
+
     return data
     
     
@@ -204,7 +209,7 @@ def get_match_info_by_matchId(API, tab_matchId) :
             
         ]).build()
         response = requests.get(url, headers={ "X-Riot-Token": API })
-        
-        if response.status_code == 200:
-            data[i] = response.json()
+        response.raise_for_status()
+
+        data[i] = response.json()
     return data    
