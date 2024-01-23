@@ -28,7 +28,7 @@ function drawIcicle(masteries) {
     classMasteriesArray.sort((a, b) => classMasteries[a.championTag].championPoints < classMasteries[b.championTag].championPoints)
     masteries.sort((a, b) => classMasteries[a.championTag].championPoints < classMasteries[b.championTag].championPoints)
 
-    const SVG = d3.select('#viz')
+    const SVG = d3.select('#viz-container').append('svg')
     SVG_WIDTH = window.innerWidth * 0.8
     SVG_HEIGHT = 750
     SVG.attr("width", SVG_WIDTH)

@@ -16,24 +16,21 @@ let masteries = undefined
 
 NAV_TABS[0].onclick = () => {
     window.changeTab(NAV_TABS[0])
-    window.clearTable()
-    window.clearSVG()
+    window.clearViz()
     if (!masteries) return
     window.drawIcicle(masteries)
 }
 
 NAV_TABS[1].onclick = () => {
     window.changeTab(NAV_TABS[1])
-    window.clearTable()
-    window.clearSVG()
+    window.clearViz()
     if (!masteries) return
     window.drawBubbles(masteries)
 }
 
 NAV_TABS[2].onclick = () => {
     window.changeTab(NAV_TABS[2])
-    window.clearTable()
-    window.clearSVG()
+    window.clearViz()
     window.showSelector()
     window.drawMatchHistory(PUUID,'any','60')
 }
@@ -61,7 +58,3 @@ riotIDInput.onchange = (e) => {
         })
     })
 }
-
-window.addEventListener("resize", (e) => {
-    
-})

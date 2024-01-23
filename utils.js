@@ -1,20 +1,8 @@
-function clearSVG() {
-    let svg = d3.select('#viz')
-		if (svg._groups[0][0] !== null) {
-				svg._groups[0][0].innerHTML = ''		
-		}
+function clearViz() {
+		const vizContainer = document.querySelector("#viz-container")
+		vizContainer.innerHTML = ''
 }
-window.clearSVG = clearSVG
-
-
-function clearTable() {
-	let table = document.getElementsByTagName("table")
-	for (let i = 0; i < table.length; i++) {
-		table[i].remove()
-	}
-	window.hideSelector()
-}
-window.clearTable = clearTable
+window.clearViz = clearViz
 
 function getMasteriesData(puuid) {
     mastery_path = DIR + 'champion_mastery_' + puuid + '.json'
