@@ -116,7 +116,7 @@ function convertDictToArray(data) {
 
 /*
 	return the player id in the game
-	game is the data of a spécifique game
+	game is the data of a specifique game
 */
 function getPlayerId(game, puuid) {
 	let players = game['metadata']['participants']
@@ -127,85 +127,92 @@ function getPlayerId(game, puuid) {
 	return player_id
 }
 
+/*
+	return the match position in data
+	game is the data an iterable object of one or more match information
+*/
+function getMatchFromMatchId(games, matchID) {
+	let gameID = 0
+	while (games[gameID]['metadata']['matchId'] !== matchID) {
+		gameID++
+	}
+	return gameID
+}
 
-
-function tabulate(data, title, columns, puuid) {
-		let table = d3.select('#viz-container')
+function templateTableMatch() {
+	window.clearViz()
+	window.hideSelector()
+	let table = d3.select('#viz-container')
 				.append('table')
-				.attr('id', title)
+				.attr('id', 'MatchInfo')
 				.classed('table', true)
 				.classed('table-striped', true)
 				.classed('table-hover', true)
-		let thead = table.append('thead')
-		let	tbody = table.append('tbody');
-		
-		// append the title row
-		thead.append('tr')
-		.append('th')
-		.text("Game mode : "+ title)
-		.attr("width", "10%")
-		
-		
-		thead.append('tr')
-		.append('th')
-		.text("Average Statistics : ")
-		
-		
-		
-		columnsName = Object.keys(columns)
-		
-		// append average stats
-		thead.append('tr')
-		.selectAll('th')
-		.data(columnsName).enter()
-		.append('th')
-		.text(function (column) {
-				return column + " : " + columns[column].toFixed(2);;
-		})
-		
-		
-		// append the header row
-		thead.append('tr')
-		.selectAll('th')
-		.data(columnsName).enter()
-		.append('th')
-		.text(function (column) {
-			if(column === 'winRate'){
-				return 'win'
-			} else {
-				return column;
-			}
-		})
-		
-		// create a row for each object in the data
-		let rows = tbody.selectAll('tr')
-		  .data(data)
-		  .enter()
-		  .each(function (d) {})
-		  .append('tr');
+	return table
+}
 
-		
-		let cells = rows.selectAll('td')
-		  .data(function (matchInfo) {
-			return columnsName.map(function (column) {
-				let pid = getPlayerId(matchInfo, puuid)
-				if (column === 'winRate') {
-					if(matchInfo['info']['participants'][pid]['win'])
-						winIcon = '✔'
-					else{
-						winIcon = '✖'
+/*
+	function to draw the table showing the statistics of a spécifique game 
+	data the complete information of a game
+*/
+function setTableMatch(data, gameMode, statAVG ,puuid) {
+	let table = d3.select('#MatchInfo')
+	let thead = table.append('thead')
+	let tbody = table.append('tbody')
+	const columnsName = Object.keys(statAVG)
+	const nameStatCol = ["Stat Name","Game stat", "Average", "Progress"]
+	thead.append('tr')
+		.append('th')
+		.text("Game mode : "+ gameMode)
+		.attr("width", "10%")
+	
+	// append the header row
+	thead.append('tr')
+	.selectAll('th')
+	.data(nameStatCol).enter()
+	.append('th')
+	.text(function (d) {return d;})
+	
+	// create a row for each object in the data
+	let rows = tbody.selectAll('tr')
+	  .data(columnsName)
+	  .enter()
+	  .filter(function (d) {if(d !== 'winRate'){return d}})
+	  .append('tr')
+	  
+	  let cells = rows.selectAll('td')
+		  .data(function (statName) {
+			return nameStatCol.map(function (column) {
+				let pid = getPlayerId(data, puuid)
+				if (column === "Stat Name") {
+					return {column: column, value: statName};
+				} else if (column === "Game stat"){
+					return {column: column, value: data['info']['participants'][pid][statName]};
+				} else if (column ==="Progress") {
+					playerData = data['info']['participants'][pid][statName] //player stat in the game
+					playerAVG = statAVG[statName] //player average stat
+					progress = ((((playerData/(playerAVG)))-1)*100).toFixed(3)
+					let progressText = ""
+					if (progress > 0){
+						
 					}
-					return {column: column, value: winIcon}; 
+					progressText = progress
+					return {column: column, value: progressText}
+					
+				} else if (column ==="Average"){
+					return {column: column, value: statAVG[statName].toFixed(3)}
 				}
-			  return {column: column, value: matchInfo['info']['participants'][pid][column]};
 			});
 		  })
 		  .enter()
 		  .append('td')
 			.text(function (d) {return d.value;})
-
-	  return table;
+	  
+	
+	return table
+	
 }
+
 
 
 /*
@@ -243,6 +250,7 @@ function tabulateHist(data, title, columns, AVGStat , puuid) {
 		
 		let pie = d3.pie().value(function(d) {return d[1].rate; })
 		WLrate = pie(Object.entries(WLrate))
+		
 		// append average stats
 		thead.append('tr')
 		.selectAll('th')
@@ -250,9 +258,9 @@ function tabulateHist(data, title, columns, AVGStat , puuid) {
 		.append('th')
 		.text(function (column) {
 				if (column === "winRate"){
-					return column + " : " + AVGStat[column].toFixed(2)*100 + "%";
+					return column + " : " + (AVGStat[column]*100).toFixed(2) + "%";
 				}
-				return column + " : " + AVGStat[column].toFixed(2);;
+				return column + " : " + AVGStat[column].toFixed(3);
 		})
 		.filter(function(d){ 
 			if(d === "winRate") {
@@ -290,15 +298,23 @@ function tabulateHist(data, title, columns, AVGStat , puuid) {
 				return column;
 			}
 		})
-		
+				
 		
 		// create a row for each object in the data
 		let rows = tbody.selectAll('tr')
 		  .data(data)
 		  .enter()
 		  .each(function (d) {})
-		  .append('tr');
-
+		  .append('tr')
+		  .attr('id', function (d) {return d['metadata']['matchId']})
+		  .on("click", function(event) {
+				let row = getRowElem(event.target)
+				matchID = row.id;
+				changeTableShown('MatchInfo')
+				let match = getMatchFromMatchId(data, matchID)
+				templateTableMatch()
+				setTableMatch(data[match], title, AVGStat, puuid)
+			});
 		
 		let cells = rows.selectAll('td')
 		  .data(function (matchInfo) {
@@ -315,6 +331,11 @@ function tabulateHist(data, title, columns, AVGStat , puuid) {
 				else if (column === 'game_date'){
 					 let test = formatDate(matchInfo['info']['gameStartTimestamp'])
 					return {column: column, value : test}
+				} else if (column === 'KDA'){
+					kills = matchInfo['info']['participants'][pid]['kills']
+					deaths = matchInfo['info']['participants'][pid]['deaths']
+					assists = matchInfo['info']['participants'][pid]['assists']
+					return {column: column, value : kills + " / " + deaths + " / " + assists}
 				}
 				else if (column === "championName") {
 					return {column : column, 
@@ -350,6 +371,17 @@ function getMonthName(monthNumber) {
   return date.toLocaleString('en-US', { month: 'long' });
 }
 
+/*
+	function only work if child of rows don't have ids
+*/
+function getRowElem(elem) {
+    while (elem.id === undefined) {
+        elem = elem.parentElement;
+    }
+	elem = elem.parentElement;
+    return elem;
+}
+
 function formatDate(timestamp) {
 	date = new Date(timestamp)
 	month = getMonthName(date.getMonth())
@@ -362,13 +394,12 @@ function drawMatchHistory(puuid, type, nb_games) {
 	history_path = DIR + 'match_id_'+ type + '_' + nb_games + '_' + puuid + '.json'
 	d3.json(history_path).then(function(data) {
 		let res = prepareHistoryData(data, puuid)
-		let hist_col = ['game_date','championName','win']
+		let hist_col = ['game_date','championName', 'KDA','win']
 		// render the tables
-		tabulateHist(res[0], ['ARAM_Games'],hist_col, res[2]['ARAM'],puuid)
-		tabulateHist(res[1], ['Ranked_Games'],hist_col, res[2]['ranked'],puuid)
-/* 		tabulate(res[0], ['ARAM'], res[2]['ARAM'], puuid);
-		tabulate(res[1], ['Ranked'], res[2]['ranked'], puuid); */
-		document.getElementById('Ranked_Games').style.display = "none";
+		tabulateHist(res[0], ['ARAM'],hist_col, res[2]['ARAM'],puuid)
+		tabulateHist(res[1], ['Ranked'],hist_col, res[2]['ranked'],puuid)
+		
+		window.changeTableShown(SELECTED_GAME_MODE)
 	})
 
 
