@@ -61,9 +61,10 @@ window.showSelector = showSelector
 	show is the id of the table you want to show
  */
 function changeTableShown(show) {
+	name = show + "_Games"
 	tables = document.getElementsByTagName('table')
 	for(let i = 0; i < tables.length; i++) {
-		if(tables[i].id === show) {
+		if(tables[i].id === name) {
 			tables[i].style.display = "block";
 		}
 		else{
