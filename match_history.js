@@ -307,6 +307,7 @@ function tabulateHist(data, title, columns, AVGStat , puuid) {
 		  .each(function (d) {})
 		  .append('tr')
 		  .attr('id', function (d) {return d['metadata']['matchId']})
+		  // add event on click for each row
 		  .on("click", function(event) {
 				let row = getRowElem(event.target)
 				matchID = row.id;
@@ -373,12 +374,12 @@ function getMonthName(monthNumber) {
 
 /*
 	function only work if child of rows don't have ids
+	could use !== if the row had an id like "specificID#matchID" and use split function [0] to get the compare part and [1] to get the matchID
 */
 function getRowElem(elem) {
-    while (elem.id === undefined) {
+    while (elem.id === "") {
         elem = elem.parentElement;
     }
-	elem = elem.parentElement;
     return elem;
 }
 
