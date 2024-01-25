@@ -12,98 +12,31 @@ function prepareHistoryData(historic, puuid) {
 	
 	let hist_ranked = Object.fromEntries(filter_ranked);
 	let hist_ARAM = Object.fromEntries(filter_ARAM);
-	avgStat['ranked']['kills'] = d3.mean(filter_ranked, ([key,data]) => {
+
+	const columnsName = ['kills', 'deaths', 'assists', 'totalMinionsKilled', 'goldEarned', 'goldSpent', 
+	'totalDamageDealtToChampions', 'totalDamageTaken', 'damageSelfMitigated', 'damageDealtToObjectives']
+
+	for(var i= 0; i < columnsName.length; i++)
+{
+	avgStat['ranked'][columnsName[i]] = d3.mean(filter_ranked, ([key,data]) => {
 		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['kills']
+		return data['info']['participants'][pid][columnsName[i]]
 		})
-	avgStat['ranked']['deaths'] = d3.mean(filter_ranked, ([key,data]) => {
+	avgStat['ARAM'][columnsName[i]] = d3.mean(filter_ARAM, ([key,data]) => {
 		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['deaths']
+		return data['info']['participants'][pid][columnsName[i]]
 		})
-	avgStat['ranked']['assists'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['assists']
-		})
-	avgStat['ranked']['totalMinionsKilled'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['totalMinionsKilled']
-		})
-	avgStat['ranked']['goldEarned'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['goldEarned']
-		})
-	avgStat['ranked']['goldSpent'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['goldSpent']
-		})
-	avgStat['ranked']['totalDamageDealtToChampions'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['totalDamageDealtToChampions']
-		})
-	avgStat['ranked']['totalDamageTaken'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['totalDamageTaken']
-		})
-	avgStat['ranked']['damageSelfMitigated'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['damageSelfMitigated']
-		})
-	avgStat['ranked']['damageDealtToObjectives'] = d3.mean(filter_ranked, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['damageDealtToObjectives']
-		})
+}
 	avgStat['ranked']['winRate'] = (d3.sum(filter_ranked, ([key,data]) => {
 		let pid = getPlayerId(data, puuid)
 		return data['info']['participants'][pid]['win']
 		}))/filter_ranked.length
-		
 	
-		
-	
-	avgStat['ARAM']['kills'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['kills']
-		})
-	avgStat['ARAM']['deaths'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['deaths']
-		})
-	avgStat['ARAM']['assists'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['assists']
-		})
-	avgStat['ARAM']['totalMinionsKilled'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['totalMinionsKilled']
-		})
-	avgStat['ARAM']['goldEarned'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['goldEarned']
-		})
-	avgStat['ARAM']['goldSpent'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['goldSpent']
-		})
-	avgStat['ARAM']['totalDamageDealtToChampions'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['totalDamageDealtToChampions']
-		})
-	avgStat['ARAM']['totalDamageTaken'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['totalDamageTaken']
-		})
-	avgStat['ARAM']['damageSelfMitigated'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['damageSelfMitigated']
-		})
-	avgStat['ARAM']['damageDealtToObjectives'] = d3.mean(filter_ARAM, ([key,data]) => {
-		let pid = getPlayerId(data, puuid)
-		return data['info']['participants'][pid]['damageDealtToObjectives']
-		})
 	avgStat['ARAM']['winRate'] = (d3.sum(filter_ARAM, ([key,data]) => {
 		let pid = getPlayerId(data, puuid)
 		return data['info']['participants'][pid]['win']
 		}))/filter_ARAM.length
+		
 	hist_ARAM = convertDictToArray(hist_ARAM)
 	hist_ranked = convertDictToArray(hist_ranked)
 	return [hist_ARAM,hist_ranked,avgStat]
