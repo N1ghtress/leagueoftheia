@@ -2,7 +2,7 @@
 
 League of theia is a tool that helps you vizualize data about League of Legends. It currently features mastery points and match history vizualisations.
 
-[Demo](demo.gif)
+![](demo.gif)
 
 # Usage
 
