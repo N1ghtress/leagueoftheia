@@ -94,10 +94,23 @@ function setTableMatch(data, gameMode, statAVG ,puuid) {
 	let tbody = table.append('tbody')
 	const columnsName = Object.keys(statAVG)
 	const nameStatCol = ["Stat Name","Game stat", "Average", "Progress"]
-	thead.append('tr')
+	let pid = getPlayerId(data, puuid)
+	
+	//add title and type of the game
+	let header = thead.append('tr')
 		.append('th')
 		.text("Game mode : "+ gameMode)
 		.attr("width", "10%")
+	
+	//add image of the champion played
+	header.append('th')
+	.text("Champion played : ")
+	.append('img')
+	.attr('src', IMG_DIR + data['info']['participants'][pid]['championName'] + ".png")
+	.attr('alt', data['info']['participants'][pid]['championName'])
+	.attr('title', data['info']['participants'][pid]['championName'])
+	.attr("width", 100)
+	.attr("height",100);
 	
 	// append the header row
 	thead.append('tr')
@@ -112,11 +125,20 @@ function setTableMatch(data, gameMode, statAVG ,puuid) {
 	  .enter()
 	  .filter(function (d) {if(d !== 'winRate'){return d}})
 	  .append('tr')
-	  
+  
+	// svg size and marging
+  	const margin = {top: 50, right: 30, bottom: 10, left: 40},
+		width = 300 - margin.left - margin.right,
+		height = 150 - margin.top - margin.bottom;
+		let y = d3.scaleLinear()
+			.domain([0, 100])
+			.range([0 , width]);
+		let progressTab = {}
+		let i = 0
+		
 	  let cells = rows.selectAll('td')
 		  .data(function (statName) {
 			return nameStatCol.map(function (column) {
-				let pid = getPlayerId(data, puuid)
 				if (column === "Stat Name") {
 					return {column: column, value: statName};
 				} else if (column === "Game stat"){
@@ -126,11 +148,14 @@ function setTableMatch(data, gameMode, statAVG ,puuid) {
 					playerAVG = statAVG[statName] //player average stat
 					progress = ((((playerData/(playerAVG)))-1)*100).toFixed(3)
 					let progressText = ""
-					if (progress > 0){
-						
+					let color = "#0096FF"
+					if ( (statName !== "deaths" && progress < 0) || (progress > 0 && statName === "deaths") ) {
+						color = '#FF0000'
 					}
 					progressText = progress
-					return {column: column, value: progressText}
+					progressTab[i] = {column: column, value: progressText, color : color}
+					i += 1
+					return {column: column, value: progressText, color : color}
 					
 				} else if (column ==="Average"){
 					return {column: column, value: statAVG[statName].toFixed(3)}
@@ -139,13 +164,40 @@ function setTableMatch(data, gameMode, statAVG ,puuid) {
 		  })
 		  .enter()
 		  .append('td')
-			.text(function (d) {return d.value;})
-	  
+			.text(function (d) {return d.column === "Progress" ?  d.value + "%": d.value;})
+			.filter(function(d){ if(d.color !== undefined) return d; })
+			.style('color', function(d) {return d.color})
+			//adding svg for progress graph
+			.append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform","translate(" + margin.left + "," + margin.top + ")")
+			//adding the y axis
+			.append("g")
+			.call(d3.axisTop(y))
+			
+			//adding the rect
+			.append("rect")
+			.attr("class", "bar")
+			.attr("x", function(d) { return y(0);})
+			.attr("width", function(d){return d.value < 0 ? y(d.value*(-1)) : y(d.value)})
+			.attr("y", 0)
+			.attr("height", 20)
+			.attr("fill", function(d){ return d.color})
+			
+			
+		//https://d3-graph-gallery.com/graph/barplot_animation_start.html
+			
+
+
+		
+
+
 	
 	return table
 	
 }
-
 
 
 /*
