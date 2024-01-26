@@ -44,8 +44,11 @@ SELECT_GAME_MODE.onchange = () => {
 
 
 const riotIDInput = document.querySelector('#riot-id-input')
-riotIDInput.onchange = (e) => {
-    if (e.target.value === '') return
+riotIDInput.onchange = parseRiotID
+riotIDInput.dispatchEvent(new Event('change'));
+
+function parseRiotID(e) {
+	if (e.target.value === '') return
 
     RIOT_ID = e.target.value
     GAME_NAME = e.target.value.split('#')[0]
@@ -60,3 +63,6 @@ riotIDInput.onchange = (e) => {
         })
     })
 }
+
+
+
