@@ -2,6 +2,8 @@
 
 League of theia is a tool that helps you vizualize data about League of Legends. It currently features mastery points and match history vizualisations.
 
+[Demo](demo.gif)
+
 # Usage
 
 You can start using League of Theia by running the fetcher script like so:
