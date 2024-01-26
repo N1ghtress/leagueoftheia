@@ -6,7 +6,7 @@ League of theia is a tool that helps you vizualize data about League of Legends.
 
 You can start using League of Theia by running the fetcher script like so:
 ```python
-./fetcher.py -k \[RIOT_API_KEY\] -r gameName\#tagLine 
+./fetcher.py -k [RIOT_API_KEY] -r gameName#tagLine 
 ```
 
 You can try with those accounts:
