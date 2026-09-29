@@ -1,18 +1,18 @@
 # League of Theia is a visualization tool
 
-League of theia is a tool that helps you vizualize data about League of Legends. It currently features mastery points and match history vizualisations.
+League of theia is a tool that helps you vizualize data about League of Legends.
+It currently features mastery points and match history vizualisations.
 
 ![](demo.gif)
 
-# Usage
+# Quick start
 
-You can start using League of Theia by running the fetcher script like so:
+To gather data about your account, you can use our fetcher script like so:
 ```python
 ./fetcher.py -k [RIOT_API_KEY] -r gameName#tagLine 
 ```
 
 You can try with those accounts:
-
 - ZeHunterZ#EUW
 - N1Ghtress#Stab
 
@@ -20,8 +20,7 @@ Once data is successfully gathered via riot API, you can start a http server usi
 ```python
 python -m http.server
 ```
-
-And you should be able to interact with our website as you pleases.
+Open `http://127.0.0.1:8000/site/` in your browser to open LeagueOfTheia.
 
 # Disclaimer 
 

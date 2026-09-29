@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League of Theia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app">
+
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-mark">T</div>
+                <div>
+                    <h1>League of Theia</h1>
+                    <span>Summoner analytics</span>
+                </div>
+            </div>
+
+            <div class="search">
+                <label for="gameTag">Summoner</label>
+                <div class="search-row">
+                    <input id="gameTag" type="text" placeholder="gameTag#tagLine" autocomplete="off">
+                    <button id="searchButton" type="button">
+                        Rechercher
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="layout">
+
+            <aside class="sidebar">
+                <nav class="navigation" aria-label="Navigation principale">
+
+                    <button class="nav-item active" data-page="mastery" type="button">
+                        <span class="nav-icon">◆</span>
+                        Champion mastery
+                    </button>
+
+                    <div class="sub-navigation">
+
+                        <button class="sub-item active" data-page="bubbles" type="button">
+                            Bubbles
+                        </button>
+
+                        <button class="sub-item" data-page="icibles" type="button">
+                            Icibles
+                        </button>
+
+                    </div>
+
+                    <button class="nav-item" data-page="history" type="button">
+                        <span class="nav-icon">◷</span>
+                        Game history
+                    </button>
+
+                </nav>
+            </aside>
+
+            <section class="content">
+                <div id="messageArea" class="message-area" aria-live="polite"></div>
+                <div class="page active" id="page-bubbles">
+                    <div class="page-header">
+                        <div>
+                            <span class="eyebrow">CHAMPION MASTERY</span>
+                            <h2>Bubbles</h2>
+                            <p>
+                                Visualisation de la maîtrise des champions.
+                            </p>
+                        </div>
+
+                        <div class="status">
+                            <span class="status-dot"></span>
+                            Connected
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <article class="stat-card">
+                            <span>Champions</span>
+                            <strong>42</strong>
+                            <small>Mastered</small>
+                        </article>
+
+                        <article class="stat-card">
+                            <span>Total mastery</span>
+                            <strong>1.84M</strong>
+                            <small>Points</small>
+                        </article>
+
+                        <article class="stat-card">
+                            <span>Highest</span>
+                            <strong>327K</strong>
+                            <small>On main champion</small>
+                        </article>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <span class="eyebrow">OVERVIEW</span>
+                                <h3>Champion bubbles</h3>
+                            </div>
+                        </div>
+
+                        <div class="bubbles" id="bubbleChart" aria-label="Graphique de maîtrise des champions"></div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-icibles">
+                    <div class="page-header">
+                        <div>
+                            <span class="eyebrow">CHAMPION MASTERY</span>
+                            <h2>Icibles</h2>
+                            <p>
+                                Détails et progression de la maîtrise.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <span class="eyebrow">MASTERY</span>
+                                <h3>Champion progression</h3>
+                            </div>
+                        </div>
+
+                        <div class="progress-list">
+
+                            <div class="progress-item">
+                                <div class="progress-info">
+                                    <span>Ahri</span>
+                                    <strong>327,420</strong>
+                                </div>
+                                <div class="progress-bar">
+                                    <span style="width: 92%"></span>
+                                </div>
+                            </div>
+
+                            <div class="progress-item">
+                                <div class="progress-info">
+                                    <span>Jinx</span>
+                                    <strong>248,130</strong>
+                                </div>
+                                <div class="progress-bar">
+                                    <span style="width: 74%"></span>
+                                </div>
+                            </div>
+
+                            <div class="progress-item">
+                                <div class="progress-info">
+                                    <span>Lux</span>
+                                    <strong>176,840</strong>
+                                </div>
+                                <div class="progress-bar">
+                                    <span style="width: 57%"></span>
+                                </div>
+                            </div>
+
+                            <div class="progress-item">
+                                <div class="progress-info">
+                                    <span>Leona</span>
+                                    <strong>91,420</strong>
+                                </div>
+                                <div class="progress-bar">
+                                    <span style="width: 36%"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-history">
+                    <div class="page-header">
+                        <div>
+                            <span class="eyebrow">MATCHES</span>
+                            <h2>Game history</h2>
+                            <p>
+                                Historique récent des parties.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+
+                        <div class="match win">
+                            <div class="champion-placeholder">A</div>
+                            <div class="match-info">
+                                <strong>Ahri</strong>
+                                <span>Ranked Solo · 28 min</span>
+                            </div>
+                            <div class="kda">
+                                <strong>12 / 3 / 9</strong>
+                                <span>KDA 7.0</span>
+                            </div>
+                            <span class="result">VICTORY</span>
+                        </div>
+
+                        <div class="match loss">
+                            <div class="champion-placeholder">J</div>
+                            <div class="match-info">
+                                <strong>Jinx</strong>
+                                <span>Ranked Solo · 31 min</span>
+                            </div>
+                            <div class="kda">
+                                <strong>6 / 8 / 4</strong>
+                                <span>KDA 1.25</span>
+                            </div>
+                            <span class="result">DEFEAT</span>
+                        </div>
+
+                        <div class="match win">
+                            <div class="champion-placeholder">L</div>
+                            <div class="match-info">
+                                <strong>Lux</strong>
+                                <span>Ranked Solo · 24 min</span>
+                            </div>
+                            <div class="kda">
+                                <strong>8 / 2 / 14</strong>
+                                <span>KDA 11.0</span>
+                            </div>
+                            <span class="result">VICTORY</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
